@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `dial_code` varchar(10) DEFAULT '' NOT NULL;

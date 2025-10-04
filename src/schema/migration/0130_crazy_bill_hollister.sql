@@ -1,0 +1,1 @@
+ALTER TABLE `leads` MODIFY COLUMN `lead_status` enum('new_lead','call_back','scheduled_call_back','registered_for_event','attended_event') NOT NULL DEFAULT 'new_lead';

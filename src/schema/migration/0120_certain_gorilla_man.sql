@@ -1,0 +1,2 @@
+ALTER TABLE `user` ADD `follow_up_who_gets_it` enum('all','new_lead','call_back','registered_for_event','attended_event') DEFAULT 'all';--> statement-breakpoint
+ALTER TABLE `user` ADD `post_event_who_gets_it` enum('all','new_lead','call_back','registered_for_event','attended_event') DEFAULT 'all';

@@ -1,0 +1,2 @@
+ALTER TABLE `leads` MODIFY COLUMN `membership_id` int DEFAULT 1;--> statement-breakpoint
+ALTER TABLE `leads` ADD CONSTRAINT `leads_membership_id_memberships_id_fk` FOREIGN KEY (`membership_id`) REFERENCES `memberships`(`id`) ON DELETE no action ON UPDATE no action;

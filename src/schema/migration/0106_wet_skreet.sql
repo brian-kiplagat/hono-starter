@@ -1,0 +1,1 @@
+ALTER TABLE `assets` ADD `mediaconvert_job_id` varchar(255);

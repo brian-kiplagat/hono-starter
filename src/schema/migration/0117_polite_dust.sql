@@ -1,0 +1,2 @@
+ALTER TABLE `user` ADD `follow_up_template_mode` enum('default','custom') DEFAULT 'default';--> statement-breakpoint
+ALTER TABLE `user` ADD `post_event_template_mode` enum('default','custom') DEFAULT 'default';

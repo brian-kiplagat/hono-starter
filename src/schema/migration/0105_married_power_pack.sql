@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `upgrade_url` text;

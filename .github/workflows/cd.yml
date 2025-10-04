@@ -1,0 +1,53 @@
+name: Deploy Node.js Hono API
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    # Check out the latest code from Git
+    - uses: actions/checkout@v3
+
+    # Setup Node.js environment
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "20"
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Deploy to the Ubuntu server using scp
+    - name: Copy files via SCP
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT }}
+        source: "."
+        target: "~/hono_api"
+
+    # Setup credentials and restart application
+    - name: Setup and Restart via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT }}
+        script: |
+          cd ~/hono_api
+          # Create credentials files
+          echo '${{ secrets.ENV_PRODUCTION }}' > .env
+          # Install dependencies with pnpm (since you're using pnpm)
+          pnpm install
+          # Build with output
+          echo "Starting pm2 daemon..."
+          # Start/reload the application with PM2
+          pm2 reload hono_api || pm2 start "pnpm start" --name hono_api

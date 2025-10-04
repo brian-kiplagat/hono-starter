@@ -1,0 +1,2 @@
+ALTER TABLE `events` ADD `image_asset_id` int;
+ALTER TABLE `events` ADD CONSTRAINT `events_image_asset_id_assets_id_fk` FOREIGN KEY (`image_asset_id`) REFERENCES `assets`(`id`) ON DELETE no action ON UPDATE no action;

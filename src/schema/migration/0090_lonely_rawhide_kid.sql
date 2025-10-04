@@ -1,0 +1,1 @@
+ALTER TABLE `assets` MODIFY COLUMN `asset_size` text;
