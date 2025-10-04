@@ -1,1 +1,0 @@
-ALTER TABLE `assets` ADD `asset_size` int;

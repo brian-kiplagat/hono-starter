@@ -1,1 +1,0 @@
-ALTER TABLE `emails` ADD `status` enum('draft','sent','failed') DEFAULT 'draft';

@@ -1,1 +1,0 @@
-ALTER TABLE `businesses` ADD `dial_code` varchar(10);

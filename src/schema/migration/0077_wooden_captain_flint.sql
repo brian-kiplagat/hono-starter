@@ -1,1 +1,0 @@
-ALTER TABLE `events` ADD `calendar_url` text;

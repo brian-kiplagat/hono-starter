@@ -1,1 +1,0 @@
-ALTER TABLE `leads` MODIFY COLUMN `status_identifier` enum('manual','landing_page','manual_bulk_import') DEFAULT 'manual';

@@ -1,1 +1,0 @@
-ALTER TABLE `lobby_telemetry` ADD `joined_meeting` boolean DEFAULT false;

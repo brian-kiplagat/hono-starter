@@ -14,11 +14,6 @@ const envSchema = z.object({
   REDIS_HOST: z.string().default('localhost'),
   REDIS_PORT: z.string().default('6379'),
   BREVO_API_KEY: z.string(),
-  AWS_REGION: z.string(),
-  AWS_ACCESS_KEY: z.string(),
-  AWS_SECRET_KEY: z.string(),
-  S3_BUCKET_NAME: z.string(),
-  TURNSTILE_SECRET_KEY: z.string(),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   GOOGLE_CALLBACK_URL: z.string(),
@@ -26,6 +21,8 @@ const envSchema = z.object({
   FRONTEND_URL: z.string(),
   BRAND_NAME: z.string().default('Elevnt.io'),
   WEBSOCKET_PORT: z.string().default('8081'),
+  BITGO_ACCESS_TOKEN: z.string(),
+  BITGO_WALLET_ID: z.string(),
 });
 
 export default envSchema.parse(process.env);

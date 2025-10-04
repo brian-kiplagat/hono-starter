@@ -1,1 +1,0 @@
-ALTER TABLE `notifications` MODIFY COLUMN `notification_type` enum('comment','like','system','new_lead','new_booking','new_payment','reminder') NOT NULL;

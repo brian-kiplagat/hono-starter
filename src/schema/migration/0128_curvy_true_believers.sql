@@ -1,1 +1,0 @@
-ALTER TABLE `leads` DROP COLUMN `form_identifier`;

@@ -1,1 +1,0 @@
-ALTER TABLE `memberships` ADD `billing` enum('per-day','package') DEFAULT 'per-day';

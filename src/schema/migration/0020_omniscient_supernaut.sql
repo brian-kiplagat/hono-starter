@@ -1,1 +1,0 @@
-ALTER TABLE `user` ADD `stripe_customer_id` varchar(255);

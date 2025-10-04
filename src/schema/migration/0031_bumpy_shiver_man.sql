@@ -1,1 +1,0 @@
-ALTER TABLE `events` RENAME COLUMN `other_dates` TO `dates`;

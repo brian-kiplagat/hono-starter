@@ -1,1 +1,0 @@
-ALTER TABLE `user` RENAME COLUMN `stripe_account_status` TO `stripe_connect_status`;

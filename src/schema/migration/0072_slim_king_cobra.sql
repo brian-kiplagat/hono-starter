@@ -1,1 +1,0 @@
-ALTER TABLE `memberships` MODIFY COLUMN `price_point` enum('standalone','course','podcast') DEFAULT 'standalone';

@@ -13,7 +13,6 @@ import { UserRepository } from '../repository/user.js';
 import { EmailService } from '../service/email.ts';
 import { GoogleService } from '../service/google.js';
 import { NotificationService } from '../service/notification.ts';
-import { S3Service } from '../service/s3.js';
 import { UserService } from '../service/user.js';
 import { Tasker } from '../task/tasker.js';
 import { AuthController } from './controller/auth.js';
@@ -21,13 +20,7 @@ import { EmailController } from './controller/email.ts';
 import { GoogleController } from './controller/google.js';
 import { NotificationController } from './controller/notification.ts';
 import { ERRORS, serveInternalServerError, serveNotFound } from './controller/resp/error.js';
-import {
-  bulkEmailValidator,
-  createBulkEmailValidator,
-  toggleBulkEmailValidator,
-  updateBulkEmailValidator,
-  updateFollowUpEmailValidator,
-} from './validator/email.ts';
+import { toggleBulkEmailValidator, updateBulkEmailValidator } from './validator/email.ts';
 import {
   createNotificationValidator,
   updateNotificationValidator,
@@ -41,7 +34,6 @@ import {
   requestResetPasswordValidator,
   resetPasswordValidator,
   updateUserDetailsValidator,
-  uploadProfileImageValidator,
 } from './validator/user.js';
 
 export class Server {
@@ -82,20 +74,20 @@ export class Server {
     const notificationRepo = new NotificationRepository();
     // Setup services
     const notificationService = new NotificationService(notificationRepo);
-    const s3Service = new S3Service();
-    const userService = new UserService(userRepo, null, null, null, null);
+
+    const userService = new UserService(userRepo);
     const emailService = new EmailService(emailRepo);
     // Setup workers
     this.registerWorker(userService, emailService);
 
     // Setup controllers
-    const authController = new AuthController(userService, null, s3Service, null, userRepo);
+    const authController = new AuthController(userService, userRepo);
 
-    const emailController = new EmailController(emailService, userService, null, null, null, null);
+    const emailController = new EmailController(emailService, userService);
 
     // Add Google service and controller
-    const googleService = new GoogleService(userService, null);
-    const googleController = new GoogleController(googleService, s3Service, userRepo);
+    const googleService = new GoogleService(userService);
+    const googleController = new GoogleController(googleService, userRepo);
 
     const notificationController = new NotificationController(notificationService, userService);
     // Register routes
@@ -110,7 +102,6 @@ export class Server {
     const authCheck = jwt({ secret: env.SECRET_KEY });
 
     user.get('/me', authCheck, authCtrl.me);
-    user.get('/dashboard', authCheck, authCtrl.getDashboard);
     user.post('/login', loginValidator, authCtrl.login);
     user.post('/register', registrationValidator, authCtrl.register);
     user.post('/send-token', emailVerificationValidator, authCtrl.sendToken);
@@ -132,34 +123,18 @@ export class Server {
     // Add Google auth routes
     user.get('/auth/google', googleCtrl.initiateAuth);
     user.get('/auth/google/callback', googleCtrl.handleCallback);
-    user.post(
-      '/upload-profile-image',
-      authCheck,
-      uploadProfileImageValidator,
-      authCtrl.uploadProfileImage,
-    );
     api.route('/user', user);
   }
 
   private registerEmailRoutes(api: Hono, emailCtrl: EmailController) {
     const email = new Hono();
     const authCheck = jwt({ secret: env.SECRET_KEY });
-    // Automated email routes (triggered by cron jobs)
-    email.get('/trigger/countdown', emailCtrl.triggerEmailEventCountdown);
-    email.get('/trigger/final-reminder', emailCtrl.triggerEmailFinalReminder);
-    email.get('/trigger/event-day', emailCtrl.triggerEmailEventDayReminder);
-    email.get('/trigger/thank-you', emailCtrl.triggerEmailThankYouFollowUp);
 
     // Apply auth middleware for authenticated routes
     email.use(authCheck);
 
-    email.post('/', bulkEmailValidator, emailCtrl.createBulkEmail);
     email.post('/toggle', toggleBulkEmailValidator, emailCtrl.toggleBulkEmail);
     email.get('/', emailCtrl.getEmails);
-    email.post('/follow-up', createBulkEmailValidator, emailCtrl.createFollowUpEmail);
-    email.get('/follow-up', emailCtrl.getFollowUpEmails);
-    email.put('/follow-up/:id', updateFollowUpEmailValidator, emailCtrl.updateFollowUpEmail);
-    email.delete('/follow-up/:id', emailCtrl.deleteFollowUpEmail);
     email.get('/:id', emailCtrl.getEmail);
     email.put('/:id', updateBulkEmailValidator, emailCtrl.updateEmail);
     email.delete('/:id', emailCtrl.deleteEmail);

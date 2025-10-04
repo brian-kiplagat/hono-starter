@@ -1,1 +1,0 @@
-ALTER TABLE `podcasts` ADD `landing_page_url` text;

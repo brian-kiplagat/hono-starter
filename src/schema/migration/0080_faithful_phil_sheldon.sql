@@ -1,1 +1,0 @@
-ALTER TABLE `course_lessons` RENAME COLUMN `duration` TO `lesson_duration`;

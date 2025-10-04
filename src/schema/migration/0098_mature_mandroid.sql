@@ -1,1 +1,0 @@
-ALTER TABLE `course_lessons` ADD `is_completed` boolean DEFAULT false;

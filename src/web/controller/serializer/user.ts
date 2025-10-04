@@ -12,8 +12,6 @@ type UserResponse = {
   bio: string | null;
   is_banned: boolean | null;
   is_deleted: boolean | null;
-  stripe_connect_id: string | null;
-  subscription_status: string | null;
   auth_provider: 'local' | 'google';
 };
 
@@ -30,8 +28,6 @@ export async function serializeUser(user: User): Promise<UserResponse> {
     bio: user.bio,
     is_banned: user.is_banned,
     is_deleted: user.is_deleted,
-    stripe_connect_id: user.stripe_connect_id,
-    subscription_status: user.subscription_status,
     auth_provider: user.auth_provider ?? 'local',
   };
 }

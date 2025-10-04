@@ -1,1 +1,0 @@
-ALTER TABLE `user` RENAME COLUMN `subscription_name` TO `subscription_product`;

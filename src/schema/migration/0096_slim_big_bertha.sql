@@ -1,1 +1,0 @@
-ALTER TABLE `leads` ADD `attended_event` boolean DEFAULT false;

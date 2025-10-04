@@ -1,1 +1,0 @@
-ALTER TABLE `businesses` DROP COLUMN `banner`;

@@ -1,1 +1,0 @@
-ALTER TABLE `leads` MODIFY COLUMN `host_id` int NOT NULL;

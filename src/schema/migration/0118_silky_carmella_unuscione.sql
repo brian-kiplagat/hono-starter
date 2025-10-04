@@ -1,1 +1,0 @@
-ALTER TABLE `user` ADD `subscription_name` enum('free','basic','popular','advanced') DEFAULT 'free';

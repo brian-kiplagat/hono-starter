@@ -1,1 +1,0 @@
-ALTER TABLE `notifications` ADD `title` varchar(255);

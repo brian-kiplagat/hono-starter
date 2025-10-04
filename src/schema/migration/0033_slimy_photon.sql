@@ -1,1 +1,0 @@
-ALTER TABLE `bookings` ADD `passcode` varchar(255);

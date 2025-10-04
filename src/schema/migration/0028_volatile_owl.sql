@@ -1,1 +1,0 @@
-ALTER TABLE `events` ADD `live_venue_address` text;
