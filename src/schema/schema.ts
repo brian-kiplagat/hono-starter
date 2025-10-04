@@ -1,7 +1,6 @@
 import { relations } from 'drizzle-orm';
 import {
   boolean,
-  decimal,
   int,
   json,
   mysqlEnum,
@@ -11,7 +10,6 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/mysql-core';
-
 
 export const userSchema = mysqlTable('user', {
   id: serial('id').primaryKey(),
@@ -82,60 +80,6 @@ export const followUpEmailSchema = mysqlTable('follow_up_emails', {
   enabled: boolean('enabled').default(false),
 });
 
-
-
-
-
-export const eventSchema = mysqlTable('events', {
-  id: serial('id').primaryKey(),
-  event_name: varchar('event_name', { length: 255 }).notNull(),
-  event_description: text('event_description'),
-  event_type: mysqlEnum('event_type', ['live_venue', 'prerecorded', 'live_video_call']).default(
-    'prerecorded',
-  ),
-  asset_id: int('asset_id').references(() => assetsSchema.id),
-  image_asset_id: int('image_asset_id').references(() => assetsSchema.id),
-  created_at: timestamp('created_at').defaultNow(),
-  status: mysqlEnum('status', ['active', 'suspended', 'cancelled']).default('active'),
-  live_video_url: text('live_video_url'),
-  success_url: text('success_url'),
-  instructions: text('instructions'),
-  duration: int('duration'),
-  landing_page_url: text('landing_page_url'),
-  calendar_url: text('calendar_url'),
-  upgrade_url: text('upgrade_url'),
-  live_venue_address: text('live_venue_address'),
-  updated_at: timestamp('updated_at').defaultNow().onUpdateNow(),
-  host_id: int('host_id')
-    .references(() => userSchema.id)
-    .notNull(),
-});
-
-
-
-
-
-export const subscriptionSchema = mysqlTable('subscription', {
-  id: serial('id').primaryKey(),
-  created_at: timestamp('created_at').defaultNow(),
-  user_id: int('user_id').notNull(),
-  object: text('object').notNull(),
-  amount_subtotal: int('amount_subtotal').notNull(),
-  amount_total: int('amount_total').notNull(),
-  session_id: text('session_id').notNull(),
-  cancel_url: text('cancel_url').notNull(),
-  success_url: text('success_url').notNull(),
-  created: int('created').notNull(),
-  currency: text('currency').notNull(),
-  mode: text('mode').notNull(),
-  payment_status: text('payment_status').notNull(),
-  status: text('status').notNull(),
-  subscription_id: text('subscription_id'),
-});
-
-
-
-
 export const notificationsSchema = mysqlTable('notifications', {
   id: serial('id').primaryKey(),
   user_id: int('user_id')
@@ -159,17 +103,6 @@ export const notificationsSchema = mysqlTable('notifications', {
   updated_at: timestamp('updated_at').defaultNow().onUpdateNow(),
 });
 
-
-
-
-
-
-
-
-
-
-
-
 export const emailsSchema = mysqlTable('emails', {
   id: serial('id').primaryKey(),
   email: varchar('email', { length: 255 }).notNull(),
@@ -190,19 +123,13 @@ export const emailsSchema = mysqlTable('emails', {
   updated_at: timestamp('updated_at').defaultNow().onUpdateNow(),
 });
 
-
-
-
 export type Email = typeof emailsSchema.$inferSelect;
 export type Notification = typeof notificationsSchema.$inferSelect;
 export type NewNotification = typeof notificationsSchema.$inferInsert;
 export type NewEmail = typeof emailsSchema.$inferInsert;
-export type Event = typeof eventSchema.$inferSelect;
-export type NewEvent = typeof eventSchema.$inferInsert;
 export type User = typeof userSchema.$inferSelect;
 
 export type NewUser = typeof userSchema.$inferInsert;
-
 
 export type FollowUpEmail = typeof followUpEmailSchema.$inferSelect;
 export type NewFollowUpEmail = typeof followUpEmailSchema.$inferInsert;
@@ -223,10 +150,6 @@ export const followUpEmailRelations = relations(followUpEmailSchema, ({ one }) =
   }),
 }));
 
-
-
-
-
 // Define the relations
 
 export const mailRelations = relations(emailsSchema, ({ one }) => ({
@@ -236,23 +159,4 @@ export const mailRelations = relations(emailsSchema, ({ one }) => ({
   }),
 }));
 
-
 // Define relations
-
-
-
-
-
-export const eventRelations = relations(eventSchema, ({ one }) => ({}));
-
-
-
-
-
-
-
-
-
-
-
-

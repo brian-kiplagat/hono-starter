@@ -1,7 +1,6 @@
 import type { Context } from 'hono';
 
 import { logger } from '../../lib/logger.js';
-import type { StripeService } from '../../service/stripe.js';
 import type { SubscriptionService } from '../../service/subscription.js';
 import type { UserService } from '../../service/user.js';
 import { type SubscriptionRequestBody } from '../validator/subscription.js';
@@ -10,16 +9,10 @@ import { serveData } from './resp/resp.js';
 
 export class SubscriptionController {
   private subscriptionService: SubscriptionService;
-  private stripeService: StripeService;
   private userService: UserService;
 
-  constructor(
-    subscriptionService: SubscriptionService,
-    stripeService: StripeService,
-    userService: UserService,
-  ) {
+  constructor(subscriptionService: SubscriptionService, userService: UserService) {
     this.subscriptionService = subscriptionService;
-    this.stripeService = stripeService;
     this.userService = userService;
   }
 
@@ -112,10 +105,7 @@ export class SubscriptionController {
       if (!user.stripe_customer_id) {
         return serveBadRequest(c, ERRORS.STRIPE_CUSTOMER_ID_NOT_FOUND);
       }
-      const cardDetails = await this.stripeService.getCustomerPaymentMethods(
-        user.stripe_customer_id,
-      );
-      return serveData(c, { subscriptions, cardDetails });
+      return serveData(c, { subscriptions });
     } catch (error) {
       logger.error('Error getting subscriptions:', error);
       return serveInternalServerError(c, error);
